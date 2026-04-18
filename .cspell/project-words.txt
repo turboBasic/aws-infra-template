@@ -1,0 +1,14 @@
+# Local project dictionary words
+# One word per line
+
+hostnames
+linuxbrew
+
+# Python words
+pymarkdown
+pyml
+
+# Terraform words
+allfiles
+tfenv
+tflock

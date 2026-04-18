@@ -1,0 +1,46 @@
+repos:
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.38.0
+    hooks:
+      - id: yamllint
+
+  - repo: https://github.com/jackdewinter/pymarkdown
+    rev: v0.9.36
+    hooks:
+      - id: pymarkdown
+        args:
+          - --config
+          - .pymarkdown
+          - scan
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.11.0.1
+    hooks:
+      - id: shellcheck
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.12
+    hooks:
+      - id: actionlint
+
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.105.0
+    hooks:
+      - id: terraform_fmt
+
+  - repo: local
+    hooks:
+      - id: terraform-validate-root
+        name: terraform validate (root module)
+        entry: scripts/terraform-validate-module.sh src/terraform
+        language: script
+        files: ^src/terraform/.*\.(tf|tfvars)$
+        exclude: ^src/terraform/bootstrap/
+        pass_filenames: false
+
+      - id: terraform-validate-bootstrap
+        name: terraform validate (bootstrap module)
+        entry: scripts/terraform-validate-module.sh src/terraform/bootstrap
+        language: script
+        files: ^src/terraform/bootstrap/.*\.(tf|tfvars)$
+        pass_filenames: false

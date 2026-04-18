@@ -1,0 +1,8 @@
+# Copy this file to terraform.tfvars and adjust values for your project.
+# terraform.tfvars is gitignored.
+
+aws_region   = "eu-central-1"
+environment  = "dev"
+project_name = "aws-infra-template"
+vpc_cidr     = "10.0.0.0/16"
+bucket_name  = "ait-storage"
