@@ -61,7 +61,7 @@ run_validate() {
   local target_dir="$1" mise_bin="$2"
 
   cd "$target_dir"
-  "$mise_bin" exec -- terraform init -backend=false -input=false -no-color >/dev/null
+  "$mise_bin" exec -- terraform init -backend=false -input=false -lockfile=readonly -no-color >/dev/null
   exec "$mise_bin" exec -- terraform validate -no-color
 }
 

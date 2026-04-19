@@ -54,7 +54,13 @@ Other handy targets:
 make help      # list all targets
 make lint      # run all pre-commit hooks against the whole repo
 make lock      # regenerate uv.lock after editing pyproject.toml
+make terraform-lock # regenerate Terraform lock files for macOS and Linux
 ```
+
+## Terraform lock files (macOS + Linux)
+
+For the lockfile policy and exact command workflow, see the Terraform section in
+[docs/ai-instructions.md](docs/ai-instructions.md#terraform).
 
 ## Deploy
 
