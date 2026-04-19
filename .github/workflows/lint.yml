@@ -35,7 +35,7 @@ jobs:
       - name: Set up Mise toolchain
         uses: jdx/mise-action@v4
         with:
-          version: 2026.3.9
+          version: 2026.4.17
 
       - name: Install pinned Mise tools
         run: mise install
