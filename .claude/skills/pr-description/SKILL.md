@@ -88,11 +88,15 @@ Replace every `{{ placeholder }}` and populate every section:
 
 ### 7. Create and submit the PR
 
-Run `gh pr create` with the title and filled-in description:
+Run `gh pr create` with the title and filled-in description. Include `--repo`, `--base`, `--head`, `--title`, and `--body` to avoid prompts:
 
 ```bash
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+REPO=$(git config --get remote.origin.url | grep -oE '[^/:]+/[^/]+$' | sed 's/\.git$//')
 gh pr create \
+  --repo "$REPO" \
   --base main \
+  --head "$CURRENT_BRANCH" \
   --title "<PR title>" \
   --body "$(cat <<'EOF'
 <filled PR description>
@@ -110,8 +114,8 @@ After the command succeeds, output the PR URL returned by `gh pr create`.
 - The Changes list must use plain Markdown bullets (`-`), not numbered lists.
 - Preserve every HTML comment (`<!-- … -->`) from the template; do not delete them.
 - Do **not** commit or amend any existing commits.
-- If `gh pr create` fails because the branch already has an open PR, report the existing
-  PR URL and stop — do not create a duplicate.
+- If `gh pr create` fails because the branch already has an open PR, report the existing PR URL and stop — do not create a duplicate.
+- **Required: Always include `--repo`, `--base`, and `--head` in the `gh pr create` command to avoid interactive prompts.**
 
 ## Example invocations
 
