@@ -245,6 +245,7 @@ The project uses [pre-commit](https://pre-commit.com) to enforce formatting and 
 | ------------------------------ | -------------------------------------------------------------------- |
 | `terraform_fmt`                | All `.tf` and `.tfvars` files                                        |
 | `terraform_tflint`             | Terraform lint checks on changed Terraform directories               |
+| `checkov`                      | Terraform security/compliance scan — config in `.checkov.yaml`       |
 | `terraform-validate-root`      | Root Terraform module under `src/terraform/` (excludes `bootstrap/`) |
 | `terraform-validate-bootstrap` | `src/terraform/bootstrap/` module                                    |
 | `yamllint`                     | YAML files                                                           |
@@ -257,6 +258,12 @@ Both `terraform-validate-*` hooks call [scripts/terraform-validate-module.sh](..
 which runs `terraform validate` through the repo-pinned `terraform` (via `mise exec`)
 against a single module with lock files in read-only mode. Root and bootstrap are validated independently — changes
 in one do not trigger validation of the other.
+
+`checkov` scans `src/terraform/` for AWS misconfigurations. Skipped checks are
+enumerated in [`.checkov.yaml`](../.checkov.yaml); each skip is categorised as
+either `(intentional)` — a deliberate template default — or `(TODO)` — a
+finding worth fixing at the template level. Remove the `(TODO)` skip when the
+underlying resource is updated.
 
 Enable in a fresh clone (after `make install`). The `commit-msg` hook type is
 required for the `commitlint` hook:
