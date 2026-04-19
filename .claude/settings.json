@@ -1,14 +1,23 @@
 {
   "permissions": {
     "allow": [
+      "Bash(cat *)",
       "Bash(gh pr *)",
+      "Bash(gh issue *)",
+      "Bash(gh run *)",
+      "Bash(git branch --show-current)",
+      "Bash(git log *)",
+      "Bash(git diff *)",
+      "Bash(git show *)",
+      "Bash(git status *)",
       "Bash(terraform fmt:*)",
+      "Bash(terraform validate *)",
       "Bash(terraform version:*)",
       "Bash(*/terraform fmt:*)",
       "Bash(*/terraform version)",
       "Bash(*/check-aws-auth.sh)",
       "Bash(*/setup-aws-auth.sh)",
-      "Bash(*/mise:*)",
+      "Bash(rg *)",
       "WebSearch",
       "WebFetch(domain:registry.terraform.io)"
     ]
