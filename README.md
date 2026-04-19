@@ -46,6 +46,7 @@ brew install mise                             # macOS · one-time, bootstraps uv
 make lock                                     # generate uv.lock from pyproject.toml (first time)
 make install                                  # uv sync --frozen — create .venv from uv.lock
 mise exec -- uv run pre-commit install        # enable git hooks (once per clone)
+mise exec -- uv run pre-commit install --hook-type commit-msg  # enable commitlint
 ```
 
 Other handy targets:

@@ -12,3 +12,10 @@ pyml
 allfiles
 tfenv
 tflock
+
+# Conventional Commits tooling
+amannn
+commitlint
+commitlintrc
+vivaxy
+wagoid

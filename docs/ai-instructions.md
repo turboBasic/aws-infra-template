@@ -195,6 +195,22 @@ aws-infra-template/
 Use Conventional Commits format: `type(scope): subject` — imperative mood, no trailing period.
 Example: `fix(ci): handle missing env variable`
 
+The allowed list of `type`s lives in [`.commitlintrc.json`](../.commitlintrc.json) and is
+the single source of truth shared by:
+
+- the local `commitlint` pre-commit hook (runs on `commit-msg` stage — see
+  [Pre-commit](#pre-commit) for install)
+- the [`vivaxy.vscode-conventional-commits`](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
+  VS Code extension (reads `type-enum` directly from the commitlint config)
+- the [`wagoid/commitlint-github-action`](https://github.com/wagoid/commitlint-github-action)
+  job that validates commit messages on pull requests
+- the [`amannn/action-semantic-pull-request`](https://github.com/amannn/action-semantic-pull-request)
+  job that validates PR titles (the workflow extracts the list from
+  `.commitlintrc.json` via `jq` and passes it to the action)
+
+To add or remove a type, edit `rules.type-enum` in `.commitlintrc.json` only —
+all four consumers pick up the change automatically.
+
 ### Terraform
 
 - **Variable naming**: snake_case, descriptive names with `description` and `type` always set
@@ -235,16 +251,19 @@ The project uses [pre-commit](https://pre-commit.com) to enforce formatting and 
 | `pymarkdown`                   | Markdown files                                                       |
 | `shellcheck`                   | Shell scripts                                                        |
 | `actionlint`                   | GitHub Actions workflows                                             |
+| `commitlint`                   | Commit messages (`commit-msg` stage) — config in `.commitlintrc.json` |
 
 Both `terraform-validate-*` hooks call [scripts/terraform-validate-module.sh](../scripts/terraform-validate-module.sh),
 which runs `terraform validate` through the repo-pinned `terraform` (via `mise exec`)
 against a single module with lock files in read-only mode. Root and bootstrap are validated independently — changes
 in one do not trigger validation of the other.
 
-Enable in a fresh clone (after `make install`):
+Enable in a fresh clone (after `make install`). The `commit-msg` hook type is
+required for the `commitlint` hook:
 
 ```bash
 mise exec -- uv run pre-commit install
+mise exec -- uv run pre-commit install --hook-type commit-msg
 ```
 
 Run against specific files (faster than `--all-files`):
