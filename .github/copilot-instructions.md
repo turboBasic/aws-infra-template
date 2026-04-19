@@ -10,7 +10,17 @@ Shared skills are defined in `.claude/skills/`. Use those skills and avoid creat
 
 ## Command execution permissions
 
-When evaluating or executing shell commands, GitHub Copilot should consult the workspace permissions declared in `.claude/settings.json` and follow them exactly. In particular:
+When evaluating or executing shell commands, GitHub Copilot should follow the shared
+auto-approve policy defined in [docs/ai-instructions.md](../docs/ai-instructions.md).
+Use these sources in this order:
 
-- Only allow commands that match patterns listed under `permissions.allow` in `.claude/settings.json`.
-- Never execute commands that match patterns listed under `permissions.deny` in `.claude/settings.json`.
+1. VS Code settings (workspace/user) allow/deny command rules
+2. `.claude/settings.json` (base rules)
+3. `.claude/settings.local.json` (local overrides, if present)
+
+If VS Code settings define allowed/denied command rules, GitHub Copilot must use those
+rules first; they override the shared policy from `.claude/settings*.json`.
+
+- Auto-approve only commands that match `permissions.allow`.
+- Never execute commands that match `permissions.deny`.
+- If a command is not explicitly allowed, request user confirmation before execution.
