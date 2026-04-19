@@ -1,0 +1,84 @@
+---
+# Checkov static analysis for Terraform.
+# Docs: https://www.checkov.io/2.Basics/CLI%20Command%20Reference.html
+#
+# Every skip below must document *why* it is skipped. Two categories exist:
+#
+#   (intentional) — a deliberate template default that users are expected to
+#                   override for their workloads. Do not remove.
+#   (TODO)        — a finding worth fixing at the template level but deferred.
+#                   Remove the skip once the underlying resource is updated.
+
+framework:
+  - terraform
+
+compact: true
+quiet: true
+
+# Limit the scan to the Terraform tree; matches the scope of the
+# terraform_tflint and terraform-validate-* hooks.
+directory:
+  - src/terraform
+
+skip-check:
+  # (intentional) Public subnets in the networking module are public by design
+  # and set map_public_ip_on_launch = true. Users who want private-only
+  # networking should not instantiate the public subnet resources.
+  - CKV_AWS_130  # VPC subnets should not assign public IP by default
+
+  # (intentional) The storage module's S3 bucket primitive uses AES-256 as a
+  # zero-cost default so the template works without provisioning a
+  # customer-managed KMS key. Users should override to aws:kms or a CMK for
+  # regulated workloads. The bootstrap state bucket already uses aws:kms.
+  - CKV_AWS_145  # S3 buckets should be encrypted with KMS (CMK)
+
+  # (intentional) Cross-region replication is a per-workload decision with
+  # material cost and an extra IAM role. The template ships single-region; add
+  # replication at the call site when the data classification requires it.
+  - CKV_AWS_144  # S3 cross-region replication
+
+  # (intentional) Access logging requires a separate logging bucket and is an
+  # app-level concern. The storage module is a minimal primitive; callers wire
+  # up logging when they add an audit trail.
+  - CKV_AWS_18   # S3 access logging
+
+  # (intentional) Event notifications are app-specific (SNS/SQS/Lambda targets).
+  # No sensible default exists at the template layer.
+  - CKV2_AWS_62  # S3 event notifications
+
+  # (intentional) Lifecycle rules on the app storage bucket depend on data
+  # retention policy, which is workload-specific. Bootstrap state buckets
+  # already have lifecycle configured.
+  - CKV2_AWS_61  # S3 bucket lifecycle configuration
+
+  # (intentional) Versioning on the app storage bucket is a data-classification
+  # decision (cost vs recoverability). The bootstrap state buckets already have
+  # versioning enabled because terraform state must be recoverable.
+  - CKV_AWS_21   # S3 versioning
+
+  # (intentional) The Terraform lock table stores ephemeral lock records; a
+  # lost row simply forces the next run to re-acquire the lock. PITR would add
+  # cost for no recovery benefit.
+  - CKV_AWS_28   # DynamoDB point-in-time recovery
+
+  # (intentional) The lock table contains no sensitive data and is encrypted by
+  # default with an AWS-owned key. A CMK would add per-key cost for no security
+  # improvement on this asset.
+  - CKV_AWS_119  # DynamoDB encryption with KMS CMK
+
+  # (TODO) Bootstrap lifecycle rules should also abort incomplete multipart
+  # uploads after N days to prevent orphaned part accumulation. Add
+  # `abort_incomplete_multipart_upload { days_after_initiation = 7 }` to both
+  # lifecycle rules in src/terraform/bootstrap/ and remove this skip.
+  - CKV_AWS_300  # S3 lifecycle should abort failed uploads
+
+  # (TODO) The default security group in the VPC is not explicitly locked down.
+  # Add an `aws_default_security_group` resource with no ingress/egress rules
+  # in modules/networking/ and remove this skip.
+  - CKV2_AWS_12  # Default security group restricts all traffic
+
+  # (TODO) VPC flow logs add ongoing cost (CloudWatch Logs or S3 ingest + storage)
+  # and are usually an observability-layer decision. Consider adding an opt-in
+  # variable to the networking module that provisions flow logs to a
+  # user-supplied log destination.
+  - CKV2_AWS_11  # VPC flow logging
