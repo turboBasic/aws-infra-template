@@ -5,6 +5,7 @@ locals {
     Environment = var.environment
     Project     = var.project_name
     ManagedBy   = "terraform"
+    Region      = data.aws_region.current.region
   }
 
   # Network CIDR blocks derived from var.vpc_cidr.

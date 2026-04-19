@@ -25,11 +25,6 @@ variable "private_subnet_cidrs" {
   }
 }
 
-variable "region" {
-  description = "AWS region (reserved for region-scoped resources)"
-  type        = string
-}
-
 variable "name_prefix" {
   description = "Prefix for resource names"
   type        = string

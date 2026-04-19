@@ -6,7 +6,6 @@ module "networking" {
   source = "./modules/networking"
 
   name_prefix = local.name_prefix
-  region      = data.aws_region.current.region
   vpc_cidr    = var.vpc_cidr
   public_subnet_cidrs = [
     local.network_cidrs.public_a,
