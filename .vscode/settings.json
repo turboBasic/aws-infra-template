@@ -1,22 +1,47 @@
 {
-    "workbench.colorCustomizations": {
-        "activityBar.background": "#1f2045",
-        "titleBar.activeBackground": "#2e2c60",
-        "titleBar.activeForeground": "#FCF9FC"
-    },
-    "files.exclude": {
-        "**/.git": true,
-        "**/.svn": true,
-        "**/.hg": true,
-        "**/.DS_Store": true,
-        "**/Thumbs.db": true,
-        "**/.git disable exclusion of .git": true,
-        ".git": true
-    },
-    "explorerExclude.backup": {},
-    "hide-files.files": [],
-    "makefile.configureOnOpen": false,
-    "json.schemaDownload.trustedDomains": {
-        "https://docs.renovatebot.com": true
-    }
+  // Copilot native permissions mirroring effective Claude allowlist.
+  "chat.tools.global.autoApprove": false,
+  "chat.tools.terminal.enableAutoApprove": true,
+  "chat.tools.terminal.ignoreDefaultAutoApproveRules": true,
+  "chat.tools.terminal.autoApprove": {
+    "cat": true,
+    "gh pr": true,
+    "gh issue": true,
+    "gh run": true,
+    "git branch --show-current": true,
+    "git log": true,
+    "git diff": true,
+    "git show": true,
+    "git status": true,
+    "/(^|\\s)(?:[^\\s]+\/)?terraform\\s+fmt\\b/": true,
+    "/(^|\\s)(?:[^\\s]+\/)?terraform\\s+validate\\b/": true,
+    "/(^|\\s)(?:[^\\s]+\/)?terraform\\s+version\\b/": true,
+    "/(^|\\s)(?:[^\\s]+\/)?check-aws-auth\\.sh\\b/": true,
+    "/(^|\\s)(?:[^\\s]+\/)?setup-aws-auth\\.sh\\b/": true,
+    "rg": true
+  },
+  "chat.tools.urls.autoApprove": {
+    "https://registry.terraform.io/*": true
+  },
+  // Other VS Code settings
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#1f2045",
+    "titleBar.activeBackground": "#2e2c60",
+    "titleBar.activeForeground": "#FCF9FC"
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/.git disable exclusion of .git": true,
+    ".git": true
+  },
+  "explorerExclude.backup": {},
+  "hide-files.files": [],
+  "makefile.configureOnOpen": false,
+  "json.schemaDownload.trustedDomains": {
+    "https://docs.renovatebot.com": true
+  }
 }
