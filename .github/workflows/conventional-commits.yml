@@ -1,5 +1,4 @@
 name: "On PR: Conventional Commits"
-# cspell:ignore amannn commitlint wagoid
 
 on:
   pull_request:
@@ -21,23 +20,26 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - name: Extract allowed commit types from commitlint config
+        id: types
+        run: |
+          {
+            echo 'types<<EOF'
+            jq -r '.rules."type-enum"[2][]' .commitlintrc.json
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+
       - name: Enforce Conventional Commit format in PR title
         uses: amannn/action-semantic-pull-request@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          types: |
-            build
-            chore
-            ci
-            docs
-            feat
-            fix
-            perf
-            refactor
-            revert
-            style
-            test
+          types: ${{ steps.types.outputs.types }}
 
   commit-messages:
     name: Validate commit messages
