@@ -1,4 +1,4 @@
-name: "On PR & push: Conventional Commits"
+name: "On PR: Conventional Commits"
 # cspell:ignore amannn commitlint wagoid
 
 on:
@@ -9,7 +9,6 @@ on:
       - reopened
       - synchronize
       - ready_for_review
-  push:
 
 permissions:
   contents: read
@@ -18,7 +17,7 @@ permissions:
 jobs:
   pr-title:
     name: Validate PR title
-    if: github.event_name == 'pull_request'
+    if: ${{ !github.event.pull_request.draft }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -42,6 +41,8 @@ jobs:
 
   commit-messages:
     name: Validate commit messages
+    # Skip draft PRs and metadata-only edits (title/body changes do not alter commits).
+    if: ${{ !github.event.pull_request.draft && github.event.action != 'edited' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
