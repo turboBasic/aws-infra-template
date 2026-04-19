@@ -42,19 +42,18 @@ dependencies (currently just `pre-commit`) with [uv](https://docs.astral.sh/uv/)
 Common dev tasks are wrapped in the [Makefile](Makefile).
 
 ```bash
-brew install mise                             # macOS · one-time, bootstraps uv + terraform
-make lock                                     # generate uv.lock from pyproject.toml (first time)
-make install                                  # uv sync --frozen — create .venv from uv.lock
-mise exec -- uv run pre-commit install        # enable git hooks (once per clone)
-mise exec -- uv run pre-commit install --hook-type commit-msg  # enable commitlint
+brew install mise   # macOS · one-time, bootstraps uv + terraform
+make lock           # generate uv.lock from pyproject.toml (first time only)
+make init-dev-env   # install Python dev deps and enable git hooks
 ```
 
 Other handy targets:
 
 ```bash
-make help      # list all targets
-make lint      # run all pre-commit hooks against the whole repo
-make lock      # regenerate uv.lock after editing pyproject.toml
+make help           # list all targets
+make install        # re-sync .venv from uv.lock (after deps change)
+make lint           # run all pre-commit hooks against the whole repo
+make lock           # regenerate uv.lock after editing pyproject.toml
 make terraform-lock # regenerate Terraform lock files for macOS and Linux
 ```
 

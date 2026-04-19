@@ -85,18 +85,18 @@ The [Makefile](../Makefile) wraps the most common dev tasks. All targets execute
 `mise exec -- uv` so they use the mise-pinned `uv` and the uv-managed virtualenv.
 
 ```bash
-make help        # list all targets
-make install     # uv sync --frozen  — install dev deps from uv.lock
-make lock        # uv lock           — regenerate uv.lock after editing pyproject.toml
-make lint        # uv run pre-commit run --all-files
+make help          # list all targets
+make init-dev-env  # first-time dev setup: install deps + enable git hooks
+make install       # uv sync --frozen  — install dev deps from uv.lock
+make lock          # uv lock           — regenerate uv.lock after editing pyproject.toml
+make lint          # uv run pre-commit run --all-files
 ```
 
 Typical bootstrap in a fresh clone:
 
 ```bash
-make lock               # generate uv.lock from pyproject.toml (first time only)
-make install            # creates .venv and installs pre-commit
-mise exec -- uv run pre-commit install   # enable git hooks
+make lock           # generate uv.lock from pyproject.toml (first time only)
+make init-dev-env   # install deps into .venv and enable pre-commit + commit-msg hooks
 ```
 
 After editing `pyproject.toml` (adding/removing/bumping a Python dev dep):
@@ -265,8 +265,8 @@ either `(intentional)` — a deliberate template default — or `(TODO)` — a
 finding worth fixing at the template level. Remove the `(TODO)` skip when the
 underlying resource is updated.
 
-Enable in a fresh clone (after `make install`). The `commit-msg` hook type is
-required for the `commitlint` hook:
+`make init-dev-env` enables both hook types in a fresh clone (the `commit-msg` type is
+required for the `commitlint` hook). If you need to install them manually:
 
 ```bash
 mise exec -- uv run pre-commit install

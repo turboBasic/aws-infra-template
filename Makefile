@@ -27,6 +27,13 @@ lint: ## Run all linters via pre-commit (yamllint, shellcheck, actionlint, terra
 install: ## Install Python dev dependencies via uv
 	$(UV) sync --frozen
 
+# ── First-time dev environment initialization ────────────────────────────────
+
+.PHONY: init-dev-env
+init-dev-env: install ## Initialize dev environment: install deps and enable git hooks
+	$(RUN) pre-commit install
+	$(RUN) pre-commit install --hook-type commit-msg
+
 # ── Update UV lock file ───────────────────────────────────────────────────────
 
 .PHONY: lock
