@@ -1,0 +1,20 @@
+# actionlint configuration
+# https://github.com/rhysd/actionlint/blob/main/docs/config.md
+#
+# actionlint's built-in checks (syntax, expression typing, shellcheck / pyflakes
+# integration for `run:` steps, action input validation, etc.) run by default
+# and need no configuration. This file only declares project-specific values
+# that actionlint cannot otherwise know about, so it can avoid false positives
+# without weakening its checks.
+
+# Labels of self-hosted runners used by workflows in this repo.
+# Declare each label here so actionlint does not flag `runs-on:` values it
+# does not recognise. Leave empty while all jobs use GitHub-hosted runners.
+self-hosted-runner:
+  labels: []
+
+# Names of repository / organisation / environment configuration variables
+# referenced via `vars.*` in workflows. Declare each variable here so actionlint
+# can validate `vars.<name>` expressions against this allow-list and catch typos.
+# Leave empty while no workflow references `vars.*`.
+config-variables: []
