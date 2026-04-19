@@ -1,6 +1,7 @@
 {
   "permissions": {
     "allow": [
+      "Bash(gh pr *)",
       "Bash(terraform fmt:*)",
       "Bash(terraform version:*)",
       "Bash(*/terraform fmt:*)",

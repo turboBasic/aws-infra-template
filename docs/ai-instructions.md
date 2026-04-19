@@ -43,6 +43,19 @@ Root-module child modules:
 | Tool versioning  | [`mise`](https://mise.jdx.dev) — pins `terraform`, `uv`, etc.     |
 | CI               | GitHub Actions                                                    |
 
+## Command Auto-Approve Rules
+
+Use a single shared source for command auto-approve rules across AI tools:
+
+- Base rules: `.claude/settings.json` under `permissions.allow` and `permissions.deny`
+- Local overrides (if present): `.claude/settings.local.json` under the same keys
+
+Policy for both Claude Code and GitHub Copilot:
+
+- Auto-approve only commands matching `permissions.allow`
+- Never execute commands matching `permissions.deny`
+- If a command is not explicitly allowed, request user confirmation instead of executing
+
 ## Workflow
 
 ### Deploy bootstrap resources (first time only)
