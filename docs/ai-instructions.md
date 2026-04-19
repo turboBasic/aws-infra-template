@@ -200,6 +200,22 @@ Example: `fix(ci): handle missing env variable`
 - **Variable naming**: snake_case, descriptive names with `description` and `type` always set
 - **File organization**: group related resources into dedicated modules under `src/terraform/modules/`; within a module use focused files (`main.tf`, `variables.tf`, `outputs.tf`, `README.md`)
 - **Formatting**: always run `terraform fmt` before finishing any change to `.tf` files
+- **Lock files**: when provider versions change, update lock files for both macOS and Linux, then commit both lock files in the same PR:
+
+   ```bash
+   make terraform-lock
+   ```
+
+   Equivalent manual commands:
+
+   ```bash
+   cd src/terraform
+   mise exec -- terraform providers lock -platform=darwin_arm64 -platform=linux_amd64
+
+   cd bootstrap
+   mise exec -- terraform providers lock -platform=darwin_arm64 -platform=linux_amd64
+   ```
+
 - **Tagging**: tag all resources via `common_tags` from `src/terraform/locals.tf` (root) or `src/terraform/bootstrap/locals.tf` (bootstrap)
 - **Security groups**: use standalone `aws_vpc_security_group_ingress_rule` / `aws_vpc_security_group_egress_rule` resources (provider 6.x best practice — avoids rule conflicts)
 
@@ -222,7 +238,7 @@ The project uses [pre-commit](https://pre-commit.com) to enforce formatting and 
 
 Both `terraform-validate-*` hooks call [scripts/terraform-validate-module.sh](../scripts/terraform-validate-module.sh),
 which runs `terraform validate` through the repo-pinned `terraform` (via `mise exec`)
-against a single module. Root and bootstrap are validated independently — changes
+against a single module with lock files in read-only mode. Root and bootstrap are validated independently — changes
 in one do not trigger validation of the other.
 
 Enable in a fresh clone (after `make install`):
