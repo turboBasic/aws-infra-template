@@ -212,6 +212,7 @@ The project uses [pre-commit](https://pre-commit.com) to enforce formatting and 
 | Hook                           | Scope                                                                |
 | ------------------------------ | -------------------------------------------------------------------- |
 | `terraform_fmt`                | All `.tf` and `.tfvars` files                                        |
+| `terraform_tflint`             | Terraform lint checks on changed Terraform directories               |
 | `terraform-validate-root`      | Root Terraform module under `src/terraform/` (excludes `bootstrap/`) |
 | `terraform-validate-bootstrap` | `src/terraform/bootstrap/` module                                    |
 | `yamllint`                     | YAML files                                                           |

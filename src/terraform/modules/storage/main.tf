@@ -2,6 +2,17 @@
 # S3 Bucket
 ################################################################################
 
+terraform {
+  required_version = ">= 1.14"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 6.40"
+    }
+  }
+}
+
 data "aws_caller_identity" "current" {}
 
 resource "aws_s3_bucket" "bucket" {

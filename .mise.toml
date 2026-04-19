@@ -1,4 +1,5 @@
 [tools]
 pre-commit = "latest"
 terraform = "prefix:1.14"
+tflint = "latest"
 uv = "latest"

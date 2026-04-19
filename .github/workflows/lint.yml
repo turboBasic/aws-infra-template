@@ -37,6 +37,9 @@ jobs:
         with:
           version: 2026.3.9
 
+      - name: Install pinned Mise tools
+        run: mise install
+
       - name: Install lint dependencies
         # Install pyproject dependencies using the uv version managed by Mise.
         run: mise exec -- uv sync --group lint --frozen
@@ -53,6 +56,7 @@ jobs:
       # Linter configurations:
       # - Configuration file for Markdown: .pymarkdown
       # - Configuration file for YAML: .yamllint
+      # - Configuration file for TFLint: .tflint.hcl
       - name: Run pre-commit on changed files
         if: steps.changed.outputs.allfiles_any_changed == 'true'
         env:
