@@ -21,7 +21,7 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Get changed files
         uses: tj-actions/changed-files@v47
@@ -45,7 +45,7 @@ jobs:
         run: mise exec -- uv sync --group lint --frozen
 
       - name: Cache pre-commit environments
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.cache/pre-commit
           key: precommit-${{ runner.os }}-${{ hashFiles('.pre-commit-config.yaml') }}
