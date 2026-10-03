@@ -33,7 +33,7 @@ jobs:
               - '**/*'
 
       - name: Set up Mise toolchain
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
           version: 2026.4.17
 
